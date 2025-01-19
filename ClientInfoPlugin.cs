@@ -35,14 +35,16 @@ namespace DNWS
       StringBuilder sb = new StringBuilder();
 
       IPEndPoint endpoint = IPEndPoint.Parse(request.getPropertyByKey("remoteendpoint"));
-      sb.Append("<html><body><pre>");
+      sb.Append("<html><body><pre><style> body { background-color: #FFE2E2; }</style>");
       sb.AppendFormat("Client IP: {0}<br/>\n", endpoint.Address);
       sb.AppendFormat("Client Port: {0}<br/>\n", endpoint.Port);
       sb.AppendFormat("Browser Information: {0}<br/>\n", request.getPropertyByKey("user-agent").Trim());
       sb.AppendFormat("Accept Language: {0}<br/>\n", request.getPropertyByKey("accept-language").Trim());
       sb.AppendFormat("Accept Encoding: {0}<br/>\n", request.getPropertyByKey("accept-encoding").Trim());
 
+
       sb.Append("</pre></body></html>");
+      
 
       response = new HTTPResponse(200);
       response.body = Encoding.UTF8.GetBytes(sb.ToString());
