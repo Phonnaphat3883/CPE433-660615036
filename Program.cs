@@ -6,7 +6,7 @@ using System.Net;
 using System.IO;
 using System.Threading;
 using Microsoft.Extensions.Configuration;
-
+using System.Threading.Tasks;
 
 namespace DNWS
 {
@@ -297,7 +297,13 @@ namespace DNWS
                     // Get one, show some info
                     _parent.Log("Client accepted:" + clientSocket.RemoteEndPoint.ToString());
                     HTTPProcessor hp = new HTTPProcessor(clientSocket, _parent);
-                    hp.Process();
+                    //make function can do all (Multi & Single)
+                    if(Program.Configuration["ThreadingMode"].ToLower().Equals("Multi")) {
+                        Thread mewThread = new Thread(new ParameterizedThreadStart( ThreadProc ));
+                        mewThread.Start(new TaskInfo(hp));
+                    } else {
+                        hp.Process();
+                    }
                 }
                 catch (Exception ex)
                 {
